@@ -1,11 +1,17 @@
-const express = require('express')
+import express from 'express';
+import routes from './routes/route.js';
+import {HandleError} from './middlewares/middleware.js';
 const app = express()
 const port = 3000
+/// Set Express json
+app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+
+/// Add Routes
+app.use('/api',routes)
+
+app.use(HandleError.errorHandler)
 
 app.listen(port ,() => {
-  console.log(`Example app listening on port ${host}${port}`)
+  console.log(`Example app listening on port ${port}`)
 })
