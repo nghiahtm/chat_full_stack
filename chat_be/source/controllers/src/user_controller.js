@@ -11,3 +11,9 @@ export const login = catchAsync(async (req, res, next)=>{
         const newUser = new AuthModel(username);
         return res.json(newUser);
     });
+
+
+    export const create = catchAsync(async (req, res, next)=>{
+        const newUser = new AuthModel(username);
+        return res.json(newUser);
+    });

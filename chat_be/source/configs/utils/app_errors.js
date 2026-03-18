@@ -23,7 +23,7 @@ export class UnauthorizedError extends AppError {
 
 // Lỗi 400 - Dữ liệu gửi lên sai (Validation)
 export class BadRequestError extends AppError {
-    constructor(message = "Dữ liệu không hợp lệ") {
+    constructor(message = ["Dữ liệu không hợp lệ"]) {
         super(message, 400);
     }
 }

@@ -15,7 +15,7 @@ class BaseResponse {
     }
 
     // Static method để tạo nhanh phản hồi lỗi
-    static error(message = "Đã có lỗi xảy ra", errorCode = 500, data = null) {
+    static error(message = ["Đã có lỗi xảy ra"], errorCode = 500, data = null) {
         return new BaseResponse(Status.FAILED, message, data, errorCode);
     }
 }
