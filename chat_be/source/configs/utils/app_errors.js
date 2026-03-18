@@ -28,4 +28,11 @@ export class BadRequestError extends AppError {
     }
 }
 
+// Lỗi 400 - Dữ liệu gửi lên sai (Validation)
+export class RequestTimeoutError extends AppError {
+    constructor(message = "Yêu cầu hết thời gian chờ") {
+        super(message, 400);
+    }
+}
+
 export default AppError;
