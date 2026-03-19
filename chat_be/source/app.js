@@ -3,14 +3,14 @@ import routes from "./routes/route.js";
 import { HandleError } from "./middlewares/middleware.js";
 import dotenv from "dotenv";
 import connectDB from "./configs/db/mongo_db_connect.js";
-
+import cookieParser from "cookie-parser";
 dotenv.config({ path: "./dev.env" });
 const app = express();
 const port = process.env.PORT || 3000;
 const ipAddress = process.env.IP_ADDRESS || "localhost";
 /// Set Express json
 app.use(express.json());
-
+app.use(cookieParser());
 /// Add Routes
 app.use("/api", routes);
 
