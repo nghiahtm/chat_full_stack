@@ -1,8 +1,9 @@
 import express from "express";
 import userRoutes from "./src/user_route.js";
 
-const rootRouter = express.Router();
+const privateRoute = express.Router();
 
 // Authentication routes: Login, Register
-rootRouter.use("/auth", userRoutes);
-export default rootRouter;
+privateRoute.use("/user", userRoutes);
+
+export default privateRoute;
