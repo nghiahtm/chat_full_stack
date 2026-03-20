@@ -13,5 +13,5 @@ export const createRefreshToken = async ({
 };
 
 export const deleteRefreshToken = async (refreshToken) => {
-  await AuthModel.deleteOne({ refreshToken: refreshToken });
+  await AuthModel.deleteOne({ refreshToken });
 };

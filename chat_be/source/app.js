@@ -1,9 +1,12 @@
 import express from "express";
-import routes from "./routes/route.js";
+import publicRoutes from "./routes/public_route.js";
 import { HandleError } from "./middlewares/middleware.js";
 import dotenv from "dotenv";
 import connectDB from "./configs/db/mongo_db_connect.js";
 import cookieParser from "cookie-parser";
+import privateRoute from "./routes/private_route.js";
+import authMiddleware from "./middlewares/auth_middleware.js";
+
 dotenv.config({ path: "./dev.env" });
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,8 +14,12 @@ const ipAddress = process.env.IP_ADDRESS || "localhost";
 /// Set Express json
 app.use(express.json());
 app.use(cookieParser());
+
 /// Add Routes
-app.use("/api", routes);
+app.use("/api", publicRoutes);
+
+app.use(authMiddleware);
+app.use("/api", privateRoute);
 
 app.use(HandleError.errorHandler);
 

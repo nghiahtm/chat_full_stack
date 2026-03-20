@@ -9,7 +9,6 @@ import crypto from "crypto";
 // Dang nhap
 export const login = catchAsync(async (req, res, next) => {
   const { username, password } = req.body;
-  console.log(`Đang xem thông tin user có ID là: ${username}`);
   /// Kiem tra username va password da duoc truyen vao hay chua
   if (!username || !password) {
     throw new UnauthorizedError("Username hoặc password không được để trống!");
@@ -82,7 +81,7 @@ export const logout = catchAsync(async (req, res, next) => {
   /// Xoa refresh token trong cookie
   const refreshToken = req.cookies?.refreshToken;
   if (refreshToken) {
-    await AuthService.deleteRefreshToken({ refreshToken });
+    await AuthService.deleteRefreshToken(refreshToken);
   }
   /// Xoa refresh token trong cookie
   res.clearCookie("refreshToken");
