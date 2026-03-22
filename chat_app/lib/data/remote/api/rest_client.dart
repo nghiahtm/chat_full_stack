@@ -1,0 +1,14 @@
+import 'package:chat_app/data/remote/models/request/auth_req_model.dart';
+import 'package:chat_app/data/remote/models/response/base_response_model.dart';
+import 'package:chat_app/utils/constant/endpoint.dart';
+import 'package:dio/dio.dart';
+import 'package:retrofit/retrofit.dart';
+part 'rest_client.g.dart';
+
+@RestApi(baseUrl: "")
+abstract class RestClient {
+  factory RestClient(Dio dio, {String? baseUrl}) = _RestClient;
+
+  @POST(Endpoint.login)
+  Future<BaseResponseModel<AuthReqModel>> login(AuthReqModel auth);
+}
