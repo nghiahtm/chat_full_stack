@@ -46,3 +46,6 @@ app.*.map.json
 *.config.dart
 *.g.dart
 pubspec.lock
+*.gr.dart
+*.freezed.dart
+.assets/env/

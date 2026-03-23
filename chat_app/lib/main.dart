@@ -5,6 +5,5 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> mainCommon(FlavorConfig flavor) async {
   await dotenv.load(fileName: "assets/env/.${flavor.env.name}.env");
-  FlavorConfig.baseUrl = dotenv.get('');
   runApp(const MyApp());
 }
