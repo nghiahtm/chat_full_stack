@@ -1,10 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chat_app/app/pages/login/bloc/login_bloc.dart';
 import 'package:chat_app/app/pages/login/bloc/login_event.dart';
+import 'package:chat_app/app/pages/login/bloc/login_state.dart';
+import 'package:chat_app/app/pages/login/data/auth_dto.dart';
 import 'package:chat_app/app/widgets/app_button.dart';
 import 'package:chat_app/app/widgets/app_scaffold.dart';
 import 'package:chat_app/utils/configs/di.dart';
 import 'package:chat_app/utils/constant/image.dart';
+import 'package:chat_app/utils/constant/path.dart';
+import 'package:chat_app/utils/themes/app_color.dart';
 import 'package:chat_app/utils/themes/text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,25 +50,74 @@ class LoginPage extends StatelessWidget implements AutoRouteWrapper {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
+                      counterText: '',
                     ),
+                    onChanged: (value) {},
+                    maxLength: 40,
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  AppButton(
-                    onPressed: () {
-                      context.read<LoginBloc>().add(
-                        GetAuthorizeEvent(userName: '', password: ''),
+                  BlocBuilder<LoginBloc, LoginState>(
+                    buildWhen: (previous, current) =>
+                        current is ObsecurePasswordState,
+                    builder: (context, state) {
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          counterText: '',
+                          labelText: 'Password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          suffixIcon: IconButton(
+                            icon:
+                                state is ObsecurePasswordState && !state.obscure
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off),
+                            color: AppColor.white,
+                            onPressed: () {
+                              context.read<LoginBloc>().add(
+                                ObsecurePasswordEvent(
+                                  obscure: state is ObsecurePasswordState
+                                      ? state.obscure
+                                      : true,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        obscureText: state is ObsecurePasswordState
+                            ? state.obscure
+                            : true,
+
+                        onChanged: (value) {},
+                        maxLength: 40,
                       );
                     },
-                    child: Text('Login'),
+                  ),
+                  const SizedBox(height: 16),
+                  BlocConsumer<LoginBloc, LoginState>(
+                    listenWhen: (previous, current) => current is LoginSuccess,
+                    listener: (context, state) => {
+                      if (state is LoginSuccess)
+                        {context.router.pushPath(PathConstant.home)},
+                    },
+                    builder: (context, state) {
+                      if (state is LoginLoading) {
+                        return const CircularProgressIndicator();
+                      }
+                      return AppButton(
+                        onPressed: () {
+                          context.read<LoginBloc>().add(
+                            GetAuthorizeEvent(
+                              authDto: AuthDto(
+                                username: 'username',
+                                password: 'password',
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text('Login'),
+                      );
+                    },
                   ),
                   const SizedBox(height: 16),
                 ],

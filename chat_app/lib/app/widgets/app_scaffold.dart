@@ -1,3 +1,4 @@
+import 'package:chat_app/utils/themes/app_color.dart';
 import 'package:flutter/material.dart';
 
 class AppScaffold extends StatelessWidget {
@@ -5,7 +6,7 @@ class AppScaffold extends StatelessWidget {
     super.key,
     this.body,
     this.appBar,
-    this.backgroundColor = Colors.deepPurpleAccent,
+    this.backgroundColor,
     this.paddingChild,
   });
   final Widget? body;
@@ -15,7 +16,7 @@ class AppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColor ?? AppColor.primary,
       appBar: appBar,
       body: Padding(
         padding: paddingChild ?? const EdgeInsets.all(16.0),

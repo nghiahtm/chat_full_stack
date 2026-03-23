@@ -1,4 +1,5 @@
-import 'package:chat_app/data/remote/models/request/auth_req_model.dart';
+import 'package:chat_app/data/remote/models/request/req/auth_req_model.dart';
+import 'package:chat_app/data/remote/models/request/res/auth_res_model.dart';
 import 'package:chat_app/data/remote/models/response/base_response_model.dart';
 import 'package:chat_app/utils/configs/flavor_config.dart';
 import 'package:chat_app/utils/constant/endpoint.dart';
@@ -12,5 +13,5 @@ abstract class RestClient {
       _RestClient(dio, baseUrl: FlavorConfig.baseUrl);
 
   @POST(Endpoint.login)
-  Future<BaseResponseModel<AuthReqModel>> login(AuthReqModel auth);
+  Future<BaseResponseModel<AuthResModel>> login(AuthReqModel auth);
 }

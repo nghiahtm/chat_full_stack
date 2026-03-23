@@ -1,15 +1,16 @@
+import 'package:chat_app/utils/themes/app_color.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
     required this.onPressed,
-    this.backgroundColor = Colors.deepPurple,
+    this.backgroundColor,
     this.foregroundColor = Colors.white,
     this.child,
   });
   final Function() onPressed;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Color foregroundColor;
   final Widget? child;
   @override
@@ -19,7 +20,7 @@ class AppButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
+          backgroundColor: backgroundColor ?? AppColor.primary,
           foregroundColor: foregroundColor,
         ),
         child: child,

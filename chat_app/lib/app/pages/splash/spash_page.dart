@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:chat_app/app/widgets/app_button.dart';
+import 'package:chat_app/app/widgets/app_scaffold.dart';
 import 'package:chat_app/utils/constant/image.dart';
 import 'package:chat_app/utils/constant/path.dart';
+import 'package:chat_app/utils/themes/app_color.dart';
 import 'package:chat_app/utils/themes/text_style.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +15,8 @@ class SpashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.deepPurpleAccent,
+    return AppScaffold(
+      paddingChild: EdgeInsets.zero,
       body: Center(
         child: Column(
           children: [
@@ -46,8 +50,8 @@ class SpashPage extends StatelessWidget {
                     onPressed: () {
                       context.router.pushPath(PathConstant.login);
                     },
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.deepPurpleAccent,
+                    backgroundColor: AppColor.white,
+                    foregroundColor: AppColor.primary,
                     child: const Text('Sign up'),
                   ),
                 ],
