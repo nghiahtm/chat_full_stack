@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import privateRoute from "./routes/private_route.js";
 import authMiddleware from "./middlewares/auth_middleware.js";
 
-dotenv.config({ path: "./dev.env" });
+dotenv.config({ path: "./.env.dev" });
 const app = express();
 const port = process.env.PORT || 5001;
 /// Set Express json
