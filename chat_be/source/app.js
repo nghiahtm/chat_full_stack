@@ -1,11 +1,30 @@
-const express = require('express')
-const app = express()
-const port = 3000
+import express from "express";
+import publicRoutes from "./routes/public_route.js";
+import { HandleError } from "./middlewares/middleware.js";
+import dotenv from "dotenv";
+import connectDB from "./configs/db/mongo_db_connect.js";
+import cookieParser from "cookie-parser";
+import privateRoute from "./routes/private_route.js";
+import authMiddleware from "./middlewares/auth_middleware.js";
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+dotenv.config({ path: "./dev.env" });
+const app = express();
+const port = process.env.PORT || 3000;
+const ipAddress = process.env.IP_ADDRESS || "localhost";
+/// Set Express json
+app.use(express.json());
+app.use(cookieParser());
 
-app.listen(port ,() => {
-  console.log(`Example app listening on port ${host}${port}`)
-})
+/// Add Routes
+app.use("/api", publicRoutes);
+
+app.use(authMiddleware);
+app.use("/api", privateRoute);
+
+app.use(HandleError.errorHandler);
+
+// Connect to MongoDB and start the server
+await connectDB();
+app.listen(port, ipAddress, () => {
+  console.log(`🚀 Server running at http://${ipAddress}:${port}`);
+});
