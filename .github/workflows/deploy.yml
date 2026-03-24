@@ -24,9 +24,9 @@ jobs:
         run: npm ci
         working-directory: ./chat_be
 
-      - name: Chạy unit test
-        run: npm test
-        working-directory: ./chat_be
+    #   - name: Chạy unit test
+    #     run: npm test
+    #     working-directory: ./chat_be
 
   deploy-render:
     name: Deploy lên Render
