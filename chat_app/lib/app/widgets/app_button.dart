@@ -23,7 +23,7 @@ class AppButton extends StatelessWidget {
           backgroundColor: backgroundColor ?? AppColor.primary,
           foregroundColor: foregroundColor,
         ),
-        child: child,
+        child: Padding(padding: const EdgeInsets.all(16.0), child: child),
       ),
     );
   }

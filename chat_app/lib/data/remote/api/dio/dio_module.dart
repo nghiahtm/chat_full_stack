@@ -9,7 +9,7 @@ abstract class RegisterModule {
   Dio get timeoutDio =>
       Dio(
           BaseOptions(
-            connectTimeout: const Duration(minutes: 1),
+            connectTimeout: const Duration(seconds: 5),
             receiveTimeout: const Duration(minutes: 1),
           ),
         )
@@ -20,17 +20,7 @@ abstract class RegisterModule {
             responseBody: true,
             responseHeader: false,
             error: true,
-            compact: true,
-            maxWidth: 90,
             enabled: kDebugMode,
-            filter: (options, args) {
-              // don't print requests with uris containing '/posts'
-              if (options.path.contains('/posts')) {
-                return false;
-              }
-              // don't print responses with unit8 list data
-              return !args.isResponse || !args.hasUint8ListData;
-            },
           ),
         );
 }

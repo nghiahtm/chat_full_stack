@@ -38,6 +38,7 @@ class SpashPage extends StatelessWidget {
               ),
               padding: EdgeInsets.all(16),
               child: Column(
+                spacing: 16,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppButton(
@@ -48,7 +49,7 @@ class SpashPage extends StatelessWidget {
                   ),
                   AppButton(
                     onPressed: () {
-                      context.router.pushPath(PathConstant.login);
+                      context.router.pushPath(PathConstant.signup);
                     },
                     backgroundColor: AppColor.white,
                     foregroundColor: AppColor.primary,

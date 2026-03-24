@@ -1,3 +1,4 @@
+import 'package:chat_app/data/remote/models/response/error_response_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'base_response_model.g.dart';
@@ -8,7 +9,7 @@ class BaseResponseModel<T> {
   final String message;
   final T? data;
   final int errorCode;
-  final List<dynamic> errors;
+  final List<ErrorResponseModel> errors;
   final String timestamp;
 
   BaseResponseModel({
