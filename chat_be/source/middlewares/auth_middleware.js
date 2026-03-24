@@ -12,22 +12,18 @@ export const authMiddleware = (req, res, next) => {
     return UnauthorizedError("Sai token hoặc token không được cung cấp!");
   }
 
-  const decodedToken = jwt.verify(
-    token,
-    process.env.JWT_SECRET_KEY,
-    async (err, decoded) => {
-      if (err) {
-        return new UnauthorizedError("Token không hợp lệ!");
-      }
+  jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
+    if (err) {
+      return next(new UnauthorizedError("Token không hợp lệ!"));
+    }
 
-      const user = await UserService.getUserById({ _id: decoded.userId });
-      if (!user) {
-        return new UnauthorizedError("Người dùng không tồn tại!");
-      }
-      req.user = user;
-      next();
-    },
-  );
+    const user = await UserService.getUserById({ _id: decoded.userId });
+    if (!user) {
+      return next(new UnauthorizedError("Người dùng không tồn tại!"));
+    }
+    req.user = user;
+    next();
+  });
 };
 
 export default authMiddleware;

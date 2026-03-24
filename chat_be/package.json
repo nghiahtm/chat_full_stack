@@ -7,7 +7,8 @@
   "type": "module",
   "main": "source/app.js",
   "scripts": {
-    "dev": "nodemon source/app.js"
+    "dev": "nodemon source/app.js",
+    "start": "node source/app.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
