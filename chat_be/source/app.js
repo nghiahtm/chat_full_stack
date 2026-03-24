@@ -24,6 +24,6 @@ app.use(HandleError.errorHandler);
 
 // Connect to MongoDB and start the server
 await connectDB();
-app.listen(port, ipAddress, () => {
+app.listen(port, () => {
   console.log(`🚀 Server running at port:${port}`);
 });
