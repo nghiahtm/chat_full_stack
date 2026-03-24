@@ -9,8 +9,7 @@ import authMiddleware from "./middlewares/auth_middleware.js";
 
 dotenv.config({ path: "./dev.env" });
 const app = express();
-const port = process.env.PORT || 3000;
-const ipAddress = process.env.IP_ADDRESS || "localhost";
+const port = process.env.PORT || 5001;
 /// Set Express json
 app.use(express.json());
 app.use(cookieParser());
@@ -26,5 +25,5 @@ app.use(HandleError.errorHandler);
 // Connect to MongoDB and start the server
 await connectDB();
 app.listen(port, ipAddress, () => {
-  console.log(`🚀 Server running at http://${ipAddress}:${port}`);
+  console.log(`🚀 Server running at port:${port}`);
 });
