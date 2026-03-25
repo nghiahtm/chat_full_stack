@@ -8,7 +8,7 @@ class BaseResponseModel<T> {
   final String success;
   final String message;
   final T? data;
-  final int errorCode;
+  final int? errorCode;
   final List<ErrorResponseModel> errors;
   final String timestamp;
 

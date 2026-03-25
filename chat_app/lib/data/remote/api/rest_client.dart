@@ -13,5 +13,5 @@ abstract class RestClient {
       _RestClient(dio, baseUrl: FlavorConfig.baseUrl);
 
   @POST(Endpoint.login)
-  Future<BaseResponseModel<AuthResModel>> login(AuthReqModel auth);
+  Future<BaseResponseModel<AuthResModel>> login(@Body() AuthReqModel auth);
 }

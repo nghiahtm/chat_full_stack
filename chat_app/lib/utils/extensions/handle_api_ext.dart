@@ -8,7 +8,7 @@ extension HandleApiExt<T> on Future<BaseResponseModel<T>> {
     try {
       final res = await this;
       final errors = res.errors;
-      if (errors.isNotEmpty) {
+      if (errors.isEmpty) {
         return this;
       } else {
         Logger().e('Error: ${errors.toString()}');
@@ -18,8 +18,8 @@ extension HandleApiExt<T> on Future<BaseResponseModel<T>> {
       final message = _handleDioError(e);
       Logger().e('Error: $message');
       throw AppError(message);
-    } on Exception catch (e) {
-      Logger().e('Error: $e');
+    } catch (e) {
+      Logger().e('Error: ${e.toString()}');
       throw AppError('Unknow Error');
     }
   }
@@ -33,8 +33,8 @@ String _handleDioError(DioException e) {
       return "Receive timeout: Server is taking too long to respond.";
     case DioExceptionType.badResponse:
       final statusCode = e.response?.statusCode;
-      final data = e.response?.data;
-      return "Error ${statusCode ?? 'Unknown'}: ${data != null ? data.toString() : 'No additional information'}";
+      final mess = e.response?.data['message'];
+      return "Error ${statusCode ?? 'Unknown'}: ${mess ?? 'No additional information'}";
     case DioExceptionType.cancel:
       return "Request was canceled.";
     case DioExceptionType.connectionError:
