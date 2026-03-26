@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:chat_app/app/bloc/app_bloc.dart';
 import 'package:chat_app/app/pages/login/bloc/login_bloc.dart';
 import 'package:chat_app/app/pages/login/widget/body_login.dart';
 import 'package:chat_app/app/widgets/app_scaffold.dart';

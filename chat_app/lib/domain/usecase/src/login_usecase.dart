@@ -1,7 +1,7 @@
-import 'package:chat_app/domain/entity/auth_req_entity.dart';
-import 'package:chat_app/domain/entity/auth_res_entity.dart';
+import 'package:chat_app/domain/entity/src/auth_req_entity.dart';
+import 'package:chat_app/domain/entity/src/auth_res_entity.dart';
 import 'package:chat_app/domain/repositories/repository.dart';
-import 'package:chat_app/domain/repositories/token_repository.dart';
+import 'package:chat_app/domain/repositories/src/token_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()
@@ -16,7 +16,7 @@ class LoginUsecase {
     if (data.token.isNotEmpty) {
       await tokenRepository.setToken(data.token);
     }
-    return authRepository.login(auth);
+    return data;
   }
 
   Future<bool> isHasToken() async {

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/app/pages/splash/bloc/splash_event.dart';
 import 'package:chat_app/app/pages/splash/bloc/splash_state.dart';
-import 'package:chat_app/domain/usecase/login_usecase.dart';
+import 'package:chat_app/domain/usecase/src/login_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()

@@ -53,9 +53,9 @@ class _BodyLoginWidgetState extends State<BodyLoginWidget> {
             return Column(
               children: [
                 const Spacer(),
-                Image.asset(
-                  ImageConstants.placeHolder,
-                  height: isHiddenKeyboard ? 128 : null,
+                Flexible(
+                  flex: isHiddenKeyboard ? 4 : 5,
+                  child: Image.asset(ImageConstants.placeHolder),
                 ),
                 const Spacer(),
                 Text('Login', style: TextStyleThemes.title),
@@ -76,113 +76,117 @@ class _BodyLoginWidgetState extends State<BodyLoginWidget> {
                   ).copyWith(bottom: isHiddenKeyboard ? (keyboardHeight) : 0),
                   child: Form(
                     key: keyForm,
-                    child: Column(
-                      spacing: 16,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BlocBuilder<LoginBloc, LoginState>(
-                          builder: (context, state) {
-                            return AppTextField(
-                              enabled: state is! LoginLoading,
-                              controller: usernameController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter username';
-                                }
-                                if (value.length < 6) {
-                                  return 'Username must be at least 6 characters';
-                                }
-                                return null;
-                              },
-                              labelText: 'Username',
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  usernameController.clear();
+                    child: SingleChildScrollView(
+                      child: Column(
+                        spacing: 16,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BlocBuilder<LoginBloc, LoginState>(
+                            builder: (context, state) {
+                              return AppTextField(
+                                enabled: state is! LoginLoading,
+                                controller: usernameController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter username';
+                                  }
+                                  if (value.length < 6) {
+                                    return 'Username must be at least 6 characters';
+                                  }
+                                  return null;
                                 },
-                                icon: const Icon(
-                                  Icons.clear,
+                                labelText: 'Username',
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    usernameController.clear();
+                                  },
+                                  icon: const Icon(
+                                    Icons.clear,
+                                    color: AppColor.white,
+                                  ),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.person,
                                   color: AppColor.white,
                                 ),
-                              ),
-                              prefixIcon: Icon(
-                                Icons.person,
-                                color: AppColor.white,
-                              ),
-                            );
-                          },
-                        ),
-                        BlocBuilder<LoginBloc, LoginState>(
-                          buildWhen: (previous, current) => previous != current,
-                          builder: (context, state) {
-                            return AppTextField(
-                              controller: passwordController,
-                              enabled: state is! LoginLoading,
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: AppColor.white,
-                              ),
-                              labelText: 'Password',
-                              obscureText: state is ObsecurePasswordState
-                                  ? state.obscure
-                                  : true,
-                              suffixIcon: IconButton(
-                                icon:
-                                    state is ObsecurePasswordState &&
-                                        !state.obscure
-                                    ? const Icon(Icons.visibility)
-                                    : const Icon(Icons.visibility_off),
-                                color: AppColor.white,
+                              );
+                            },
+                          ),
+                          BlocBuilder<LoginBloc, LoginState>(
+                            buildWhen: (previous, current) =>
+                                previous != current,
+                            builder: (context, state) {
+                              return AppTextField(
+                                controller: passwordController,
+                                enabled: state is! LoginLoading,
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: AppColor.white,
+                                ),
+                                labelText: 'Password',
+                                obscureText: state is ObsecurePasswordState
+                                    ? state.obscure
+                                    : true,
+                                suffixIcon: IconButton(
+                                  icon:
+                                      state is ObsecurePasswordState &&
+                                          !state.obscure
+                                      ? const Icon(Icons.visibility)
+                                      : const Icon(Icons.visibility_off),
+                                  color: AppColor.white,
+                                  onPressed: () {
+                                    context.read<LoginBloc>().add(
+                                      ObsecurePasswordEvent(
+                                        obscure: state is ObsecurePasswordState
+                                            ? state.obscure
+                                            : true,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter password';
+                                  }
+                                  if (value.length < 6) {
+                                    return 'Password must be at least 6 characters';
+                                  }
+                                  return null;
+                                },
+                              );
+                            },
+                          ),
+                          BlocConsumer<LoginBloc, LoginState>(
+                            listener: (context, state) => {
+                              if (state is LoginSuccess)
+                                {context.router.pushPath(PathConstant.home)},
+                            },
+                            builder: (context, state) {
+                              if (state is LoginLoading) {
+                                return const CircularProgressIndicator();
+                              }
+                              return AppButton(
                                 onPressed: () {
+                                  if (keyForm.currentState?.validate() !=
+                                      true) {
+                                    return;
+                                  }
                                   context.read<LoginBloc>().add(
-                                    ObsecurePasswordEvent(
-                                      obscure: state is ObsecurePasswordState
-                                          ? state.obscure
-                                          : true,
+                                    GetAuthorizeEvent(
+                                      authDto: AuthDto(
+                                        username: usernameController.text,
+                                        password: passwordController.text,
+                                      ),
                                     ),
                                   );
                                 },
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter password';
-                                }
-                                if (value.length < 6) {
-                                  return 'Password must be at least 6 characters';
-                                }
-                                return null;
-                              },
-                            );
-                          },
-                        ),
-                        BlocConsumer<LoginBloc, LoginState>(
-                          listener: (context, state) => {
-                            if (state is LoginSuccess)
-                              {context.router.pushPath(PathConstant.home)},
-                          },
-                          builder: (context, state) {
-                            if (state is LoginLoading) {
-                              return const CircularProgressIndicator();
-                            }
-                            return AppButton(
-                              onPressed: () {
-                                if (keyForm.currentState?.validate() != true) {
-                                  return;
-                                }
-                                context.read<LoginBloc>().add(
-                                  GetAuthorizeEvent(
-                                    authDto: AuthDto(
-                                      username: usernameController.text,
-                                      password: passwordController.text,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Text('Login'),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                      ],
+                                child: Text('Login'),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
                     ),
                   ),
                 ),

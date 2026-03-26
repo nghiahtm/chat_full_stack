@@ -1,5 +1,5 @@
 import 'package:chat_app/data/local/shared_pref/access_local.dart';
-import 'package:chat_app/domain/repositories/token_repository.dart';
+import 'package:chat_app/domain/repositories/src/token_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: TokenRepository)
