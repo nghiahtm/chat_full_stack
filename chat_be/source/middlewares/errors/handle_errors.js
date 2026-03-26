@@ -1,9 +1,15 @@
 import BaseResponse from "../../configs/utils/base_response.js";
+import { ERROR_MESSAGES } from "../../configs/utils/message_error.js";
 
 export const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  const mess = err.message;
-  const errors = err.errors || [];
-  const response = BaseResponse.error(mess, statusCode, null, errors);
+  let errorMess = err.message;
+  // if (statusCode === 500) {
+  //   errorMess = ERROR_MESSAGES.INTERNAL_SERVER_ERROR;
+  // } else {
+  //   errorMess = err.message;
+  // }
+  const errors = err.errors;
+  const response = BaseResponse.error(errorMess, statusCode, null, errors);
   res.status(statusCode).json(response);
 };
