@@ -46,6 +46,9 @@ dependencies:
   auto_route:
   freezed_annotation:
   flutter_bloc:
+  pretty_dio_logger:
+  flutter_keyboard_visibility: ^6.0.0
+  encrypt_shared_preferences:
 dev_dependencies:
   flutter_test:
     sdk: flutter

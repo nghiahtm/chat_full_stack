@@ -5,6 +5,5 @@ import 'package:chat_app/utils/enums/env_enum.dart';
 
 void mainProd(String env) {
   configureDependencies();
-
   mainCommon(FlavorConfig(env: FlavorEnvEnum.dev));
 }

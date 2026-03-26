@@ -7,4 +7,5 @@ class FlavorConfig {
   FlavorConfig({required this.env});
 
   static String get baseUrl => dotenv.get("BASE_URL");
+  static String get kPREF => dotenv.get("KPREF");
 }
