@@ -1,7 +1,9 @@
 import 'package:chat_app/data/remote/api/rest_client.dart';
 import 'package:chat_app/data/remote/models/request/req/auth_req_model.dart';
+import 'package:chat_app/data/remote/models/request/req/user_create_req_model.dart';
 import 'package:chat_app/domain/entity/src/auth_req_entity.dart';
 import 'package:chat_app/domain/entity/src/auth_res_entity.dart';
+import 'package:chat_app/domain/entity/src/user_create_req_entity.dart';
 import 'package:chat_app/domain/repositories/src/auth_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -25,5 +27,23 @@ class AuthRepositoryImpl implements AuthRepository {
         )
         .handleApi();
     return AuthResEntity(token: res.data?.accessToken ?? '');
+  }
+
+  @override
+  Future<bool> createUser(UserCreateReqEntity userReq) async {
+    final res = await restApi
+        .createUser(
+          UserCreateReqModel(
+            userReq.username,
+            userReq.password,
+            userReq.confirmPassword,
+            userReq.email,
+            userReq.fullName,
+          ),
+        )
+        .handleApi();
+
+    /// Không có lỗi gì là tạo thành công
+    return res.errors.isEmpty;
   }
 }
