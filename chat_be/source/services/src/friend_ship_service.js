@@ -16,3 +16,11 @@ export const findFriendHadRequest = async (senderId, receiverId) =>
       },
     ],
   });
+
+export const getFriendRequest = async (idFriendRequest, receiverId) =>
+  await FriendShipModel.findOne(idFriendRequest);
+
+export const updateFriendShip = async (idFriendRequest, receiverId) =>
+  await FriendShipModel.findByIdAndUpdate(idFriendRequest, receiverId, {
+    activeFriend: "accept",
+  });
