@@ -7,10 +7,10 @@ import cookieParser from "cookie-parser";
 import privateRoute from "./routes/private_route.js";
 import authMiddleware from "./middlewares/auth_middleware.js";
 
-dotenv.config({ path: "./dev.env" });
+dotenv.config({ path: `./.env.${process.env.ENV || 'dev'}` });
 const app = express();
-const port = process.env.PORT || 3000;
-const ipAddress = process.env.IP_ADDRESS || "localhost";
+const port = process.env.PORT || 5001;
+const IP = process.env.IP||"0.0.0.0";
 /// Set Express json
 app.use(express.json());
 app.use(cookieParser());
@@ -25,6 +25,6 @@ app.use(HandleError.errorHandler);
 
 // Connect to MongoDB and start the server
 await connectDB();
-app.listen(port, ipAddress, () => {
-  console.log(`🚀 Server running at http://${ipAddress}:${port}`);
+app.listen(port,IP, () => {
+  console.log(`🚀 Server running at ${IP}:${port}`);
 });
