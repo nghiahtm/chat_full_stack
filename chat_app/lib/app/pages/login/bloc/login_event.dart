@@ -10,4 +10,6 @@ abstract class LoginEvent with _$LoginEvent {
 
   const factory LoginEvent.obsecurePassword({required bool obscure}) =
       ObsecurePasswordEvent;
+  const factory LoginEvent.isHasText({required bool isHasText}) =
+      ShowOrHideClearTextUsernameEvent;
 }

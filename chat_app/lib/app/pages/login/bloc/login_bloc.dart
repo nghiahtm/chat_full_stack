@@ -15,6 +15,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     : super(LoginInitial()) {
     on<GetAuthorizeEvent>(_onLogin);
     on<ObsecurePasswordEvent>(_obsecurePasswordEvent);
+    on<ShowOrHideClearTextUsernameEvent>(_onHideAndShowClearTextUsername);
   }
 
   Future<void> _onLogin(
@@ -38,5 +39,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) {
     emit(ObsecurePasswordState(obscure: !event.obscure));
+  }
+
+  void _onHideAndShowClearTextUsername(
+    ShowOrHideClearTextUsernameEvent event,
+    Emitter<LoginState> emit,
+  ) {
+    emit(ShowOrHideClearTextUsernameState(isHasText: event.isHasText));
   }
 }

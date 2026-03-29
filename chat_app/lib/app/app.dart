@@ -1,6 +1,5 @@
 import 'package:chat_app/app/bloc/app_bloc.dart';
 import 'package:chat_app/app/bloc/app_event.dart';
-import 'package:chat_app/app/bloc/app_state.dart';
 import 'package:chat_app/app/routes/app_route.dart';
 import 'package:chat_app/utils/themes/app_color.dart';
 import 'package:flutter/material.dart';

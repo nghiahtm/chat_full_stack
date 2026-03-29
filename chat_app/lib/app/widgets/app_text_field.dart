@@ -11,6 +11,7 @@ class AppTextField extends StatefulWidget {
     this.controller,
     this.enabled,
     this.prefixIcon,
+    this.keyboardType,
   });
   final bool obscureText;
   final Widget? suffixIcon;
@@ -20,6 +21,7 @@ class AppTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final bool? enabled;
+  final TextInputType? keyboardType;
   @override
   State<AppTextField> createState() => _AppTextFieldState();
 }
@@ -38,7 +40,7 @@ class _AppTextFieldState extends State<AppTextField> {
         prefixIcon: widget.prefixIcon,
       ),
       obscureText: widget.obscureText,
-
+      keyboardType: widget.keyboardType,
       onChanged: widget.onChanged,
       validator: widget.validator,
       maxLength: 40,

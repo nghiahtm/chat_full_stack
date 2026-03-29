@@ -15,3 +15,8 @@ class ObsecurePasswordState extends LoginState {
   final bool obscure;
   ObsecurePasswordState({required this.obscure});
 }
+
+class ShowOrHideClearTextUsernameState extends LoginState {
+  final bool isHasText;
+  ShowOrHideClearTextUsernameState({this.isHasText = false});
+}

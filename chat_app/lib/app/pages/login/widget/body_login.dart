@@ -96,14 +96,35 @@ class _BodyLoginWidgetState extends State<BodyLoginWidget> {
                                   return null;
                                 },
                                 labelText: 'Username',
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    usernameController.clear();
+                                onChanged: (value) {
+                                  context.read<LoginBloc>().add(
+                                    ShowOrHideClearTextUsernameEvent(
+                                      isHasText: value.isNotEmpty,
+                                    ),
+                                  );
+                                },
+                                suffixIcon: BlocBuilder<LoginBloc, LoginState>(
+                                  builder: (context, state) {
+                                    if (state
+                                            is ShowOrHideClearTextUsernameState &&
+                                        state.isHasText) {
+                                      return IconButton(
+                                        onPressed: () {
+                                          usernameController.clear();
+                                          context.read<LoginBloc>().add(
+                                            ShowOrHideClearTextUsernameEvent(
+                                              isHasText: false,
+                                            ),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.clear,
+                                          color: AppColor.white,
+                                        ),
+                                      );
+                                    }
+                                    return const SizedBox.shrink();
                                   },
-                                  icon: const Icon(
-                                    Icons.clear,
-                                    color: AppColor.white,
-                                  ),
                                 ),
                                 prefixIcon: Icon(
                                   Icons.person,
@@ -184,7 +205,7 @@ class _BodyLoginWidgetState extends State<BodyLoginWidget> {
                               );
                             },
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox.shrink(),
                         ],
                       ),
                     ),

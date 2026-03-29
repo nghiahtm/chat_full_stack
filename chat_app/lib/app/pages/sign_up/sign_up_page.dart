@@ -1,10 +1,14 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:chat_app/app/bloc/app_bloc.dart';
+import 'package:chat_app/app/bloc/app_state.dart';
+import 'package:chat_app/app/pages/sign_up/bloc/signup_bloc.dart';
 import 'package:chat_app/app/pages/sign_up/widget/body_create.dart';
-import 'package:chat_app/app/widgets/app_button.dart';
 import 'package:chat_app/app/widgets/app_scaffold.dart';
+import 'package:chat_app/utils/configs/di.dart';
 import 'package:chat_app/utils/constant/image.dart';
 import 'package:chat_app/utils/themes/text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
 class SignUpPage extends StatelessWidget implements AutoRouteWrapper {
@@ -18,13 +22,24 @@ class SignUpPage extends StatelessWidget implements AutoRouteWrapper {
         child: Column(
           children: [
             const Spacer(),
-            Image.asset(ImageConstants.placeholderSignUp),
-            const Spacer(),
+            BlocSelector<AppBloc, AppState, bool>(
+              selector: (state) => state.isHiddenKeyboard,
+              builder: (_, isHiddenKeyboard) {
+                if (isHiddenKeyboard) {
+                  return const SizedBox.shrink();
+                }
+                return Flexible(
+                  flex: 3,
+                  child: Image.asset(ImageConstants.placeholderSignUp),
+                );
+              },
+            ),
             Text('Sign up', style: TextStyleThemes.title),
             const Spacer(),
             Container(
               width: double.infinity,
               alignment: Alignment.bottomCenter,
+
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -33,7 +48,10 @@ class SignUpPage extends StatelessWidget implements AutoRouteWrapper {
                 ),
               ),
               padding: EdgeInsets.all(16),
-              child: BodyCreateWidget(),
+              child: SingleChildScrollView(
+                padding: EdgeInsetsGeometry.zero,
+                child: BodyCreateWidget(),
+              ),
             ),
           ],
         ),
@@ -44,6 +62,6 @@ class SignUpPage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     // TODO: implement wrappedRoute
-    return this;
+    return BlocProvider(create: (context) => getIt<SignupBloc>(), child: this);
   }
 }

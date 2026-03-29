@@ -1,4 +1,5 @@
 import 'package:chat_app/data/remote/models/request/req/auth_req_model.dart';
+import 'package:chat_app/data/remote/models/request/req/user_create_req_model.dart';
 import 'package:chat_app/data/remote/models/response/auth_res_model.dart';
 import 'package:chat_app/data/remote/models/response/user_model.dart';
 import 'package:chat_app/data/remote/models/response/base_response_model.dart';
@@ -18,4 +19,9 @@ abstract class RestClient {
 
   @POST(Endpoint.inforUser)
   Future<BaseResponseModel<UserModel>> getUserProfile();
+
+  @POST(Endpoint.createUser)
+  Future<BaseResponseModel<UserModel>> createUser(
+    @Body() UserCreateReqModel userReq,
+  );
 }
