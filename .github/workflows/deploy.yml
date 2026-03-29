@@ -1,0 +1,85 @@
+name: CI/CD deploy chat_be lên Render
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    name: Kiểm tra code
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+
+      - name: Cài dependencies
+        run: npm ci
+        working-directory: ./chat_be
+
+    #   - name: Chạy unit test
+    #     run: npm test
+    #     working-directory: ./chat_be
+
+  deploy-render:
+    name: Deploy lên Render
+    needs: test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Trigger Render deploy API
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+        run: |
+          echo "Bắt đầu deploy service Render: $RENDER_SERVICE_ID"
+
+          status=$(curl -s -o /tmp/render-deploy.json -w "%{http_code}" -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' )
+
+          echo "Render API HTTP status: $status"
+          cat /tmp/render-deploy.json
+
+          if [[ "$status" != "201" && "$status" != "200" ]]; then
+            echo "Deploy Render thất bại";
+            exit 1;
+          fi
+
+      - name: Kiểm tra trạng thái deploy (tuỳ chọn)
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+        run: |
+          echo "Kiểm tra deploy trong Render"
+          response=$(curl -s -H "Authorization: Bearer $RENDER_API_KEY" "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys")
+          echo "$response"
+
+          if echo "$response" | jq -e '.[0].deploy.status' > /dev/null 2>&1; then
+            deploy_id=$(echo "$response" | jq -r '.[0].deploy.id')
+            status=$(echo "$response" | jq -r '.[0].deploy.status')
+            echo "Deploy ID: $deploy_id"
+            echo "Trạng thái: $status"
+
+            if [[ "$status" == "live" ]]; then
+              echo "✅ Deploy thành công!"
+            elif [[ "$status" == "build_failed" || "$status" == "deactivated" || "$status" == "update_failed" ]]; then
+              echo "❌ Deploy thất bại: $status"
+              exit 1
+            else
+              echo "⏳ Deploy đang xử lý: $status"
+            fi
+          else
+            echo "Lỗi từ Render API hoặc không lấy được dữ liệu"
+            exit 1
+          fi
