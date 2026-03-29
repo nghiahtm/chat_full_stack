@@ -1,6 +1,5 @@
 import catchAsync from "../../configs/utils/catch_async.js";
-import BaseResponse from "../../configs/utils/base_response.js";
-import { BadRequestError, UnauthorizedError } from "../../configs/utils/app_errors.js";
+import { BadRequestError } from "../../configs/utils/app_errors.js";
 import { UserService, FriendShipService } from "../../services/service.js";
 import { HandleSuccess } from "../../middlewares/middleware.js";
 
