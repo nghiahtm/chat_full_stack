@@ -62,10 +62,13 @@ export const login = catchAsync(async (req, res, next) => {
 /// Dang ky
 export const create = catchAsync(async (req, res, next) => {
   const { username, password, email, fullName } = req.body;
-  const duplicate = await UserService.findUser({ username });
+  const duplicate = await UserService.findUser({
+    $or: [{ username: username }, { email: email }],
+  });
   if (duplicate) {
-    throw new UnauthorizedError("Username đã tồn tại!");
+    throw new UnauthorizedError("Username hoặc email đã tồn tại!");
   }
+
   const hashedPassword = await bcrypt.hash(password, 10);
   await UserService.createUser({
     username,
