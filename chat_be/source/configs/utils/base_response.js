@@ -24,6 +24,23 @@ class BaseResponse {
   ) {
     return new BaseResponse(Status.FAILED, message, data, errorCode, errors);
   }
+
+  // Phản hồi thành công cho phân trang (Paging)
+  static paging(result, message = "Lấy dữ liệu thành công") {
+    const pagingData = {
+      items: result.docs,
+      meta: {
+        totalItems: result.totalDocs,
+        itemCount: result.docs.length,
+        itemsPerPage: result.limit,
+        totalPages: result.totalPages,
+        currentPage: result.page,
+        hasNextPage: result.hasNextPage,
+        hasPrevPage: result.hasPrevPage,
+      },
+    };
+    return new BasePagingResponse(true, message, pagingData);
+  }
 }
 
 export default BaseResponse;

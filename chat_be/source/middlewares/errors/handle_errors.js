@@ -1,5 +1,5 @@
 import BaseResponse from "../../configs/utils/base_response.js";
-import { ERROR_MESSAGES } from "../../configs/utils/message_error.js";
+import { ERROR_MESSAGES } from "../../configs/utils/enum/message_error.js";
 
 export const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
