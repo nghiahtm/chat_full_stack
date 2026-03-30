@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const friendShipSchema = new mongoose.Schema(
   {
@@ -32,6 +33,9 @@ const friendShipSchema = new mongoose.Schema(
 
 //tránh trường hợp A gửi kết bạn cho B hai lần (duplicating)
 friendShipSchema.index({ senderId: 1, receiverId: 1 }, { unique: true });
+
+// Kích hoạt paging
+friendShipSchema.plugin(mongoosePaginate);
 
 friendShipSchema.post("save", function (error, doc, next) {
   if (error.name === "MongoServerError" && error.code === 11000) {
