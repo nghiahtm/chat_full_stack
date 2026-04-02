@@ -55,9 +55,9 @@ export const addFriend = catchAsync(async (req, res, next) => {
 });
 
 export const acceptFriend = catchAsync(async (req, res, next) => {
-  const { idFriendRequest } = req.body;
+  const { idFriendShip } = req.body;
   await FriendShipService.updateStatusFriendShip(
-    idFriendRequest,
+    idFriendShip,
     FRIEND_STATUS_ENUM.ACCEPT,
   );
   return HandleSuccess.successResponse(
@@ -69,10 +69,10 @@ export const acceptFriend = catchAsync(async (req, res, next) => {
 });
 
 export const declineFriend = catchAsync(async (req, res, next) => {
-  const { idFriendRequest } = req.body;
+  const { idFriendShip } = req.body;
 
   await FriendShipService.updateStatusFriendShip(
-    idFriendRequest,
+    idFriendShip,
     FRIEND_STATUS_ENUM.DECLINE,
   );
   return HandleSuccess.successResponse(

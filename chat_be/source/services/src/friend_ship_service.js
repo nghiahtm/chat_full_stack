@@ -46,22 +46,26 @@ export const findFriends = async (currentUserId, options) => {
   if (search) {
     const safeSearch = searchFriends.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     if (searchFriends.startsWith("@")) {
-      userMatch.username = searchFriends.slice(1).trim();
+      userFilter.username = searchFriends.slice(1).trim();
     } else {
       const regex = new RegExp(safeSearch.trim(), "i");
-      userFilter.$or = [
-        { username: regex },
-        { email: regex },
-        { fullName: regex },
-      ];
+      userFilter.$or = [{ email: regex }, { fullName: regex }];
     }
   }
   const paginateOptions = {
     page,
     limit,
     populate: [
-      { path: "senderId", select: "username email", match: userFilter },
-      { path: "receiverId", select: "username email", match: userFilter },
+      {
+        path: "senderId",
+        select: "fullName email username",
+        match: userFilter,
+      },
+      {
+        path: "receiverId",
+        select: "fullName email username",
+        match: userFilter,
+      },
     ],
     lean: true,
   };
@@ -79,9 +83,12 @@ export const findFriends = async (currentUserId, options) => {
           user !== null && user._id.toString() !== currentUserId.toString(),
       );
       if (!friendInfo) return null;
+      const { username, ...restFriendInfo } = friendInfo.toObject
+        ? friendInfo.toObject()
+        : friendInfo;
       return {
         friendshipId: doc._id,
-        friendInfo,
+        restFriendInfo,
         status: doc.status,
       };
     })
