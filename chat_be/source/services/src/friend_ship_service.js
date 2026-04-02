@@ -1,3 +1,4 @@
+import { validateText } from "../../configs/utils/text_valid.js";
 import { FriendShipModel } from "../../models/model.js";
 
 export const createFriendShip = async (friendRelation) =>
@@ -44,7 +45,7 @@ export const findFriends = async (currentUserId, options) => {
   let userFilter = {};
 
   if (search) {
-    const safeSearch = searchFriends.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const safeSearch = validateText(search);
     if (searchFriends.startsWith("@")) {
       userFilter.username = searchFriends.slice(1).trim();
     } else {

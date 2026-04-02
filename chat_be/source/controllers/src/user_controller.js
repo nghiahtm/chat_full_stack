@@ -1,6 +1,18 @@
 import catchAsync from "../../configs/utils/catch_async.js";
-import BaseResponse from "../../configs/utils/base_response.js";
+import { HandleSuccess } from "../../middlewares/middleware.js";
+import { UserService } from "../../services/service.js";
 
 export const getUser = catchAsync(async (req, res, next) => {
-  return res.json(BaseResponse.success(req.user, "User found successfully!"));
+  return HandleSuccess.successResponse(req.user, "User found successfully!");
+});
+
+export const findUsers = catchAsync(async (req, res, next) => {
+  const { page = 1, limit = 10, search = "" } = req.body;
+  const options = {
+    page: page,
+    limit: limit,
+    search: search,
+  };
+  const result = await UserService.getUsers(options);
+  return HandleSuccess.successResponse(res, result, 200);
 });
