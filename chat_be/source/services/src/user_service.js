@@ -27,13 +27,19 @@ export const getUsers = async (options) => {
     page,
     limit,
     lean: true,
-    select: "-hashedPassword",
+    select: "-hashedPassword -__v -createdAt -updatedAt",
   };
 
   const userData = await UserModel.paginate(query, paginateOptions);
+
   console.log("🚀 ~ file: userRes ~ result:", userData);
   if (!userData) return null;
   // Xử lý để lấy thông tin "người kia"
-  userData.docs = userData.docs.filter((item) => item !== null);
+  userData.docs = userData.docs
+    .map(({ _id, ...data }) => ({
+      id: _id.toString(),
+      ...data,
+    }))
+    .filter((item) => item !== null);
   return userData;
 };
