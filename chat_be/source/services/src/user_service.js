@@ -34,6 +34,6 @@ export const getUsers = async (options) => {
   console.log("🚀 ~ file: userRes ~ result:", userData);
   if (!userData) return null;
   // Xử lý để lấy thông tin "người kia"
-  const result = userData.docs.filter((item) => item !== null);
-  return result;
+  userData.docs = userData.docs.filter((item) => item !== null);
+  return userData;
 };
