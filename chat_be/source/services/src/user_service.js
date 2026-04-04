@@ -30,16 +30,10 @@ export const getUsers = async (options) => {
     select: "-hashedPassword",
   };
 
-  const result = await UserModel.paginate(query, paginateOptions);
-  console.log("🚀 ~ file: userRes ~ result:", result);
-  if (!result) return null;
+  const userData = await UserModel.paginate(query, paginateOptions);
+  console.log("🚀 ~ file: userRes ~ result:", userData);
+  if (!userData) return null;
   // Xử lý để lấy thông tin "người kia"
-  result.docs = result.docs
-    .map((doc) => {
-      return {
-        userInfo: doc,
-      };
-    })
-    .filter((item) => item !== null);
+  const result = userData.docs.filter((item) => item !== null);
   return result;
 };

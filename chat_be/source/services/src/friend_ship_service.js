@@ -89,8 +89,8 @@ export const findFriends = async (currentUserId, options) => {
         : friendInfo;
       return {
         friendshipId: doc._id,
+        status: doc.activeFriend,
         restFriendInfo,
-        status: doc.status,
       };
     })
     .filter((item) => item !== null);
