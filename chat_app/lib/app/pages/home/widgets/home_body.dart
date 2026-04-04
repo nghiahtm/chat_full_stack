@@ -1,5 +1,6 @@
 import 'package:chat_app/app/pages/home/bloc/home_bloc.dart';
 import 'package:chat_app/app/pages/home/bloc/home_event.dart';
+import 'package:chat_app/app/pages/home/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,6 +20,6 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(children: [HeaderWidget()]);
   }
 }

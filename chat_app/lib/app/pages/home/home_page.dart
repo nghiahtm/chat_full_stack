@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:chat_app/app/pages/home/bloc/home_bloc.dart';
-import 'package:chat_app/app/pages/home/widgets/home_body.dart';
+import 'package:chat_app/app/pages/home/bloc/home_event.dart';
+import 'package:chat_app/app/pages/home/bloc/home_state.dart';
+import 'package:chat_app/app/pages/home/data/index_page.dart';
 import 'package:chat_app/app/widgets/app_scaffold.dart';
 import 'package:chat_app/utils/configs/di.dart';
 import 'package:chat_app/utils/configs/enc_shared_pref.dart';
@@ -16,24 +18,46 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              context.router.replacePath(PathConstant.init);
-              getIt<EncSharedPref>().remove(PrefKeyConstant.kToken);
-            },
-          ),
-        ],
+      body: SafeArea(
+        child: BlocSelector<HomeBloc, HomeState, int>(
+          selector: (state) => state.selectedIndex,
+          builder: (context, curIndex) {
+            return PageView.builder(
+              itemBuilder: (context, index) {
+                return listIndexPage[curIndex].page;
+              },
+              onPageChanged: (index) {
+                context.read<HomeBloc>().add(OnChangeTabEvent(index: index));
+              },
+              itemCount: listIndexPage.length,
+            );
+          },
+        ),
       ),
-      body: HomeBody(),
+      bottonNavBar: BlocSelector<HomeBloc, HomeState, int>(
+        selector: (state) => state.selectedIndex,
+        builder: (context, curIndex) {
+          return BottomNavigationBar(
+            onTap: (index) {
+              context.read<HomeBloc>().add(OnChangeTabEvent(index: index));
+            },
+            currentIndex: curIndex,
+            items: listIndexPage
+                .map(
+                  (e) => BottomNavigationBarItem(
+                    icon: Icon(e.icon),
+                    label: e.label ?? '',
+                  ),
+                )
+                .toList(),
+          );
+        },
+      ),
     );
   }
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    // TODO: implement wrappedRoute
     return BlocProvider(create: (_) => getIt<HomeBloc>(), child: this);
   }
 }

@@ -3,14 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()
-class AuthorizeInterceptor implements Interceptor {
+class AuthorizeInterceptor extends Interceptor {
   final AccessLocal accessLocal;
 
   AuthorizeInterceptor({required this.accessLocal});
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    // TODO: implement onError
-  }
 
   @override
   void onRequest(
@@ -23,13 +19,5 @@ class AuthorizeInterceptor implements Interceptor {
       options.headers['Authorization'] = 'Bearer $token';
     }
     handler.next(options);
-  }
-
-  @override
-  void onResponse(
-    Response<dynamic> response,
-    ResponseInterceptorHandler handler,
-  ) {
-    // TODO: implement onResponse
   }
 }

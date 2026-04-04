@@ -30,7 +30,7 @@ abstract class RegisterModule {
   Dio get dioAuth {
     final dio = Dio(
       BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
+        connectTimeout: const Duration(minutes: 1),
         receiveTimeout: const Duration(minutes: 1),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:chat_app/utils/themes/text_style.dart';
 import 'package:flutter/material.dart';
 
 class AppTextField extends StatefulWidget {
@@ -12,6 +13,10 @@ class AppTextField extends StatefulWidget {
     this.enabled,
     this.prefixIcon,
     this.keyboardType,
+    this.hintText,
+    this.focusNode,
+    this.onFieldSubmitted,
+    this.textInputAction,
   });
   final bool obscureText;
   final Widget? suffixIcon;
@@ -22,6 +27,10 @@ class AppTextField extends StatefulWidget {
   final TextEditingController? controller;
   final bool? enabled;
   final TextInputType? keyboardType;
+  final String? hintText;
+  final FocusNode? focusNode;
+  final Function(String)? onFieldSubmitted;
+  final TextInputAction? textInputAction;
   @override
   State<AppTextField> createState() => _AppTextFieldState();
 }
@@ -32,18 +41,23 @@ class _AppTextFieldState extends State<AppTextField> {
     return TextFormField(
       enabled: widget.enabled,
       controller: widget.controller,
+      focusNode: widget.focusNode,
       decoration: InputDecoration(
         counterText: '',
         labelText: widget.labelText,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         suffixIcon: widget.suffixIcon,
         prefixIcon: widget.prefixIcon,
+        hintText: widget.hintText,
+        hintStyle: TextStyleThemes.body.copyWith(color: Colors.grey),
       ),
       obscureText: widget.obscureText,
       keyboardType: widget.keyboardType,
       onChanged: widget.onChanged,
       validator: widget.validator,
       maxLength: 40,
+      textInputAction: widget.textInputAction,
+      onFieldSubmitted: widget.onFieldSubmitted,
     );
   }
 }

@@ -11,14 +11,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc({required this.userUsecase}) : super(HomeState()) {
     on<InitEvent>(onGetUser);
+    on<OnChangeTabEvent>(_onChangeTab);
   }
 
   Future<void> onGetUser(InitEvent event, Emitter<HomeState> emit) async {
     blocCatching(
       execute: () async {
         final user = await userUsecase.getProfile();
-        print(user);
       },
     );
+  }
+
+  void _onChangeTab(OnChangeTabEvent event, Emitter<HomeState> emit) {
+    emit(state.copyWith(selectedIndex: event.index));
   }
 }
