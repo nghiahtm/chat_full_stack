@@ -3,7 +3,11 @@ import { HandleSuccess } from "../../middlewares/middleware.js";
 import { UserService } from "../../services/service.js";
 
 export const getUser = catchAsync(async (req, res, next) => {
-  return HandleSuccess.successResponse(req.user, "User found successfully!");
+  return HandleSuccess.successResponse(
+    res,
+    req.user,
+    "User found successfully!",
+  );
 });
 
 export const findUsers = catchAsync(async (req, res, next) => {
@@ -14,5 +18,5 @@ export const findUsers = catchAsync(async (req, res, next) => {
     search: search,
   };
   const result = await UserService.getUsers(options);
-  return HandleSuccess.successResponse(res, result, 200);
+  return HandleSuccess.successResponse(res, result, "Successfully");
 });
