@@ -9,6 +9,9 @@ export const getUserById = async (userId) =>
 
 export const getUsers = async (options) => {
   const { page, limit, search } = options;
+  if (!search) {
+    return [];
+  }
   let query = {};
   if (options.search) {
     let searchCriteria;
