@@ -1,6 +1,6 @@
-import { is } from "zod/locales";
 import { BadRequestError } from "../../configs/utils/app_errors.js";
 import { AuthModel } from "../../models/model.js";
+import crypto from "crypto";
 
 export const createRefreshToken = async ({
   refreshToken,
@@ -30,5 +30,18 @@ export const refreshAccessToken = async (refreshToken) => {
     await AuthModel.deleteOne({ refreshToken });
     throw new BadRequestError("Refresh token has expired!");
   }
-  return isRefreshTokenValid.referencedUser;
+  const newRefreshToken = crypto.randomBytes(64).toString("hex");
+
+  const msExpiresIn = Number(process.env.REFRESH_TOKEN_EXPIRES_IN);
+  await AuthModel.findOneAndUpdate(
+    { _id: isRefreshTokenValid._id },
+    {
+      refreshToken: newRefreshToken,
+      expiresAt: new Date(Date.now() + msExpiresIn),
+    },
+  );
+  return {
+    newRefreshToken,
+    referencedUser: isRefreshTokenValid.referencedUser,
+  };
 };
