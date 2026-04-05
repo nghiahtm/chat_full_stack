@@ -1,0 +1,1 @@
+enum TypeUserEnum { logout, userInfo }

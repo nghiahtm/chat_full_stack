@@ -1,6 +1,8 @@
 import 'package:chat_app/data/remote/models/request/req/auth_req_model.dart';
 import 'package:chat_app/data/remote/models/request/req/user_create_req_model.dart';
+import 'package:chat_app/data/remote/models/request/req/user_req_search_model.dart';
 import 'package:chat_app/data/remote/models/response/auth_res_model.dart';
+import 'package:chat_app/data/remote/models/response/base_docs_paging.dart';
 import 'package:chat_app/data/remote/models/response/user_model.dart';
 import 'package:chat_app/data/remote/models/response/base_response_model.dart';
 import 'package:chat_app/utils/configs/flavor_config.dart';
@@ -23,5 +25,10 @@ abstract class RestClient {
   @POST(Endpoint.createUser)
   Future<BaseResponseModel<UserModel>> createUser(
     @Body() UserCreateReqModel userReq,
+  );
+
+  @POST(Endpoint.searchUser)
+  Future<BaseResponseModel<BaseDocsPaging<UserModel>>> searchUser(
+    @Body() UserReqSearchModel searchUsers,
   );
 }

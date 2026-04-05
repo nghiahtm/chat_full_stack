@@ -33,8 +33,12 @@ String _handleDioError(DioException e) {
       return "Receive timeout: Server is taking too long to respond.";
     case DioExceptionType.badResponse:
       final statusCode = e.response?.statusCode;
+      if (e.response?.data == null) {
+        return "Error ${statusCode ?? 'Unknown'}: No additional information";
+      }
       final mess = e.response?.data['message'];
       return "Error ${statusCode ?? 'Unknown'}: ${mess ?? 'No additional information'}";
+
     case DioExceptionType.cancel:
       return "Request was canceled.";
     case DioExceptionType.connectionError:
