@@ -5,6 +5,7 @@ import BaseResponse from "../../configs/utils/base_response.js";
 import { UserService, AuthService } from "../../services/service.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import { HandleSuccess } from "../../middlewares/middleware.js";
 
 // Dang nhap
 export const login = catchAsync(async (req, res, next) => {
@@ -90,4 +91,28 @@ export const logout = catchAsync(async (req, res, next) => {
   res.clearCookie("refreshToken");
   /// Tra ve response cho client
   return res.json(BaseResponse.success(null, "Logout successful!"));
+});
+
+/// refresh access token
+export const refreshAccToken = catchAsync(async (req, res, next) => {
+  const refreshToken = req.cookies?.refreshToken;
+  if (!refreshToken) {
+    throw new BadRequestError("Refresh token is required!");
+  }
+  const isValidRefreshToken =
+    await AuthService.refreshAccessToken(refreshToken);
+
+  const accessToken = jwt.sign(
+    { userId: isValidRefreshToken },
+    process.env.JWT_SECRET_KEY,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    },
+  );
+
+  return HandleSuccess.successResponse(
+    res,
+    { accessToken },
+    "Access token refreshed successfully!",
+  );
 });

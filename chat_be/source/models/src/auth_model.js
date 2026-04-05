@@ -7,6 +7,7 @@ const authenSchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
+      index: true,
     },
     /// Lưu thông tin user để sau này có thể xóa refresh token khi user logout
     referencedUser: {
