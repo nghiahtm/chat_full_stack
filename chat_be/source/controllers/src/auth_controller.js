@@ -55,8 +55,10 @@ export const login = catchAsync(async (req, res, next) => {
     maxAge: msExpiresIn, // 7 ngay
   });
   /// Tra ve access token cho client
-  return res.json(
-    BaseResponse.success({ accessToken }, "User logged in successfully!"),
+  return HandleSuccess.successResponse(
+    res,
+    { accessToken, refreshToken },
+    "User logged in successfully!",
   );
 });
 
@@ -77,7 +79,7 @@ export const create = catchAsync(async (req, res, next) => {
     email,
     fullName,
   });
-  return res.json(BaseResponse.success(null, "User created successfully!"));
+  return HandleSuccess.successResponse(res, null, "User created successfully!");
 });
 
 /// Dang xuat
@@ -95,15 +97,14 @@ export const logout = catchAsync(async (req, res, next) => {
 
 /// refresh access token
 export const refreshAccToken = catchAsync(async (req, res, next) => {
-  const refreshToken = req.cookies?.refreshToken;
+  const { refreshToken } = req.body;
   if (!refreshToken) {
-    throw new BadRequestError("Refresh token is required!");
+    throw new BadRequestError("Refresh token không hợp lệ!");
   }
-  const isValidRefreshToken =
-    await AuthService.refreshAccessToken(refreshToken);
 
+  const authService = await AuthService.refreshAccessToken(refreshToken);
   const accessToken = jwt.sign(
-    { userId: isValidRefreshToken },
+    { userId: authService.referencedUser },
     process.env.JWT_SECRET_KEY,
     {
       expiresIn: process.env.JWT_EXPIRES_IN,
@@ -112,7 +113,7 @@ export const refreshAccToken = catchAsync(async (req, res, next) => {
 
   return HandleSuccess.successResponse(
     res,
-    { accessToken },
+    { accessToken, refreshToken: authService.newRefreshToken },
     "Access token refreshed successfully!",
   );
 });
